@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FormatStringAttribute.cs" />
-    <Compile Include="Attributes\OffSetAttribute.cs" />
+    <Compile Include="Attributes\FormatAttribute.cs" />
     <Compile Include="Attributes\PadAttribute.cs" />
-    <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="MultiParser.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
