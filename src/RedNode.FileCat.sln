@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedNode.FileCat", "RedNode.FileCat\RedNode.FileCat.csproj", "{4D37A2A4-53FD-4831-9344-861815F3843E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{01D5989D-F2EE-43DB-95D5-0D7D1B3EA2F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedNode.FileCat.Tests", "RedNode.FileCat.Tests\RedNode.FileCat.Tests.csproj", "{19870523-619C-4172-85DA-C3B13242CE60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D37A2A4-53FD-4831-9344-861815F3843E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D37A2A4-53FD-4831-9344-861815F3843E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D37A2A4-53FD-4831-9344-861815F3843E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D37A2A4-53FD-4831-9344-861815F3843E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19870523-619C-4172-85DA-C3B13242CE60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19870523-619C-4172-85DA-C3B13242CE60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19870523-619C-4172-85DA-C3B13242CE60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19870523-619C-4172-85DA-C3B13242CE60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{19870523-619C-4172-85DA-C3B13242CE60} = {01D5989D-F2EE-43DB-95D5-0D7D1B3EA2F0}
+	EndGlobalSection
+EndGlobal
