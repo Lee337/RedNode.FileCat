@@ -74,6 +74,21 @@ namespace RedNode.FileCat.Tests
     {
       var parser = new MultiParser(typeof(HeaderRecord), typeof(Transaction), typeof(TrailerRecord));
 
+      var headerRecord = new HeaderRecord()
+      {
+        TransmissionNo = 1,
+        Date = new DateTime(2013, 08, 04)
+      };
+
+      var line = parser.WriteLine(headerRecord);
+
+      Assert.AreEqual(line, "000T040820130000001");
+    }
+
+    [TestMethod]
+    public void CreateMultiLineMultiTest()
+    {
+      var parser = new MultiParser(typeof(HeaderRecord), typeof(Transaction), typeof(TrailerRecord));
 
       var list = new List<object>();
       list.Add(new HeaderRecord()
@@ -103,10 +118,31 @@ namespace RedNode.FileCat.Tests
       var content = parser.WriteLines(list);
 
       Assert.AreEqual(content, "000T040820130000001" + Environment.NewLine +
-          "000T030000000100000001231            0000005000" + Environment.NewLine +
-          "000T030000000200000002464            0000010000" + Environment.NewLine +
-          "000T030000000300000003699            0000015000" + Environment.NewLine +
+          "000T030000000100000001231            00000050000000000000" + Environment.NewLine +
+          "000T030000000200000002464            00000100000000000000" + Environment.NewLine +
+          "000T030000000300000003699            00000150000000000000" + Environment.NewLine +
           "999T000000504082013" + Environment.NewLine);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void GetObjectFromMultiLineErrorTest()
+    {
+      var parser = new MultiParser(typeof(TrailerRecordError), typeof(TransactionError));
+
+      parser.CreateObjectFromString("000T030000000200000002464            0000010000");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void WriteLineError()
+    {
+      var parser = new MultiParser(typeof(TransactionError));
+
+      parser.WriteLine(new TransactionError()
+      {
+        AccountNo = "123"
+      });
     }
 
     [TestMethod]
@@ -114,7 +150,7 @@ namespace RedNode.FileCat.Tests
     {
       var parser = new MultiParser(typeof(HeaderRecord), typeof(Transaction));
 
-      var item = (Transaction)parser.CreateObjectFromString("000T030000000200000002464            0000010000");
+      var item = (Transaction)parser.CreateObjectFromString("000T030000000200000002464            00000100000000005000");
 
       var resultingItem = new Transaction()
         {
@@ -122,6 +158,7 @@ namespace RedNode.FileCat.Tests
           AccountNo = "0000000246",
           IdNumber = "4            ",
           Amount = 100,
+          PaidAmount = 50,
           RecordIdentifier = 0,
           RecordStatus = 'T',
           TransactionType = 30
@@ -135,6 +172,7 @@ namespace RedNode.FileCat.Tests
       Assert.AreEqual(resultingItem.AccountNo, item.AccountNo);
       Assert.AreEqual(resultingItem.IdNumber, item.IdNumber);
       Assert.AreEqual(resultingItem.Amount, item.Amount);
+      Assert.AreEqual(resultingItem.PaidAmount, item.PaidAmount);
     }
   }
 
@@ -192,6 +230,62 @@ namespace RedNode.FileCat.Tests
     [StringLength(10)]
     [Pad('0', PadAttribute.PaddingDirection.Left)]
     public Decimal Amount { get; set; }
+
+    [Format("0.00", 2)]
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    [StringLength(10)]
+    public Decimal? PaidAmount { get; set; }
+  }
+
+  public class TransactionError
+  {
+    [DefaultValue(0)]
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    public int? RecordIdentifier { get; set; }
+
+    [DefaultValue('T')]
+    [StringLength(1)]
+    public char? RecordStatus { get; set; }
+
+    [DefaultValue(30)]
+    [StringLength(3)]
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    public int? TransactionType { get; set; }
+
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    [StringLength(7)]
+    public int? SequenceNo { get; set; }
+
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    [StringLength(10)]
+    public string AccountNo { get; set; }
+
+    [StringLength(13)]
+    public string IdNumber { get; set; }
+
+    [Format("0.00", 2)]
+    [StringLength(10)]
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    public Decimal Amount { get; set; }
+  }
+
+  public class TrailerRecordError
+  {
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    [StringLength(3)]
+    [Key]
+    public int? RecordIdentifier { get; set; }
+
+    [DefaultValue('T')]
+    [StringLength(1)]
+    public char? RecordStatus { get; set; }
+
+    [Pad('0', PadAttribute.PaddingDirection.Left)]
+    public int? TotalLines { get; set; }
+
+    [Format("ddMMyyyy")]
+    [StringLength(8)]
+    public DateTime Date { get; set; }
   }
 
   public class TrailerRecord

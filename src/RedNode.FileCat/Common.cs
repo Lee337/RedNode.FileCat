@@ -54,9 +54,10 @@ namespace RedNode.FileCat
         {
           // Get Default Value
           var defaultValueAttribute = attributes.FirstOrDefault(a => a.GetType() == typeof(DefaultValueAttribute)) as DefaultValueAttribute;
-          if (defaultValueAttribute == null)
+          if (defaultValueAttribute == null && Nullable.GetUnderlyingType(property.GetType()) != null)
             throw new ArgumentNullException(string.Format("Property {0} does not have a value", property.Name));
-          itemContent = defaultValueAttribute.Value.ToString();
+          if (defaultValueAttribute != null)
+            itemContent = defaultValueAttribute.Value.ToString();
         }
         else
         {
